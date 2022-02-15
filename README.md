@@ -6,5 +6,7 @@ Parses the IB hardening_manifest.yaml and for each URL in `resources` attempts t
 - Validates the `checksum`
 
 ## Usage
-`pip3 install -r requirements.txt`
-`fetch.py --hm-path <local-path-to>/hardening_manifest.yaml`
+```python
+pip3 install -r requirements.txt
+fetch.py --hm-path <local-path-to>/hardening_manifest.yaml
+```
