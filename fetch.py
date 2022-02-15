@@ -10,7 +10,6 @@ import validators
 import yaml
 
 from logging2 import Logger
-from operator import itemgetter
 
 logger = Logger('app')
 http   = urllib3.PoolManager()
