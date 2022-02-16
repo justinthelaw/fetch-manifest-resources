@@ -16,7 +16,8 @@ This tool parses the hardening_manifest.yaml and for each URL in `resources` att
 - Validates the checksum `value`
 
 ## Usage
-```python
-pip3 install -r requirements.txt
-fetch.py --hm-path <local-path-to>/hardening_manifest.yaml
-```
+1. `make build`
+2. `docker run --rm -v $PWD:/work -it fetch-resources:latest` where `$PWD` is the local directory where your hardening_manifest.yaml lives.
+
+### Testing
+1. `make test`
