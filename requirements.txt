@@ -1,0 +1,5 @@
+urllib3
+requests
+logging2
+pyyaml
+validators

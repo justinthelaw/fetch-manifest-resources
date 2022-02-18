@@ -1,0 +1,105 @@
+---
+apiVersion: v1
+
+# The repository name in registry1, excluding /ironbank/
+name: "mycompany/myproduct/tool1"
+
+# List of tags to push for the repository in registry1
+# The most specific version should be the first tag and will be shown
+# on ironbank.dso.mil
+tags:
+- "1.4.2"
+- "latest"
+
+# Build args passed to Dockerfile ARGs
+args:
+  BASE_IMAGE: "redhat/ubi/ubi8"
+  BASE_TAG: "8.3"
+
+# Docker image labels
+labels:
+  # Name of the image
+  org.opencontainers.image.title: "tool1"
+  # Human-readable description of the software packaged in the image
+  org.opencontainers.image.description: "MongoDB Enterprise Operator Image"
+  # License(s) under which contained software is distributed
+  org.opencontainers.image.licenses: "Vendor1 License"
+  # URL to find more information on the image
+  org.opencontainers.image.url: "https://vendor1.com/docs"
+  # Name of the distributing entity, organization or individual
+  org.opencontainers.image.vendor: "Vendor1"
+  # Authoritative version of the software
+  org.opencontainers.image.version: "1.4.2"
+  # Keywords to help with search (ex. "cicd,gitops,golang")
+  mil.dso.ironbank.image.keywords: "k8s,operator,db"
+  # This value can be "opensource" or "commercial"
+  mil.dso.ironbank.image.type: "commercial"
+  # Product the image belongs to for grouping multiple images
+  mil.dso.ironbank.product.name: "myproduct/tool1"
+
+# List of resources to make available to the offline build context
+resources:
+  - filename: libgit2.tar.gz
+    url: https://github.com/libgit2/libgit2/archive/refs/tags/v1.1.1.tar.gz
+    validation:
+      type: sha256
+      value: 13a525373f64c711a00a058514d890d1512080265f98e0935ab279393f21a620
+
+  # Example https resource
+  - url: "https://s3.amazonaws.com/ops-manager-kubernetes-build/releases/mongodb-enterprise-operator-binaries-release-1.4.2.tar.gz"
+    filename: "mongodb-files1.tar.gz" # [required field] desired staging name for the build context
+    validation:
+      type: "sha256" # supported: sha256, sha512
+      value: "3d6b4cfca92067edd5c860c212ff5153d1e162b8791408bc671900309eb555ec" # must be lowercase
+
+  # Example https resource with auth
+  # The following CI variables with values provided by the vendor will need to made within the project for this auth to be used during download
+  # These variables can be created at the group level if it needs to be used by several projects. Otherwise, please create these at the project level.
+  # CREDENTIAL_USERNAME_mongodb-enterprise
+  # CREDENTIAL_PASSWORD_mongodb-enterprise
+  - url: "https://s3.amazonaws.com/ops-manager-kubernetes-build/releases/mongodb-enterprise-operator-binaries-release-1.4.2.tar.gz"
+    filename: "mongodb-files1.tar.gz" # [required field] desired staging name for the build context
+    validation:
+      type: "sha256"
+      value: "3d6b4cfca92067edd5c860c212ff5153d1e162b8791408bc671900309eb555ec"
+    auth:
+      type: basic
+      id: mongodb-enterprise
+
+  # Example S3 resource with auth
+  # The following CI variables with values provided by the vendor will need to made within the project for this auth to be used during download
+  # These variables can be created at the group level if it needs to be used by several projects. Otherwise, please create these at the project level.
+  # S3_ACCESS_KEY_pathfinder-credentials
+  # S3_SECRET_KEY_pathfinder-credentials
+  - url: s3://eightynine-bucket/newgpudb-1.0-1.x86_64.rpm
+    filename: newgpudb-1.0-1.x86_64.rpm
+    validation:
+      type: sha256
+      value: 5da61965ce348d08a8c63fd516bccdc686e4e42c065b32bcd5c9a2d6d882d6a0
+    auth:
+      type: s3
+      id: pathfinder-credential
+      region: us-east-1
+
+  # Example docker resource with auth
+  # The following CI variables with values provided by the vendor will need to made within the project for this auth to be used during download
+  # These variables can be created at the group level if it needs to be used by several projects. Otherwise, please create these at the project level.
+  # CREDENTIAL_USERNAME_ubi8-registry1
+  # CREDENTIAL_PASSWORD_ubi8-registry1
+  - url: docker://registry1.dso.mil/ironbank/redhat/ubi/ubi8
+    tag: ubi/ubi8:8.3
+    auth:
+      type: basic
+      id: ubi8-registry1
+
+# List of project maintainers
+maintainers:
+- email: "jane.dow@email.com"
+  # The name of the current container owner
+  name: "Jane Dow"
+  # The gitlab username of the current container owner
+  username: "jdow"
+  cht_member: true # NOTE: Include if the maintainer is a member of CHT
+- name: "John Doe"
+  username: "johndoe"
+  email: "john.doe@mongodb.com"
