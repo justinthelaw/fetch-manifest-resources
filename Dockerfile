@@ -6,6 +6,8 @@ FROM ${BASE_REGISTRY}/${BASE_IMAGE}:${BASE_TAG}
 
 WORKDIR /app
 
+USER root
+
 COPY ./ /app
 
 RUN pip install -r requirements.txt
