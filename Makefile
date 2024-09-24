@@ -1,9 +1,9 @@
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := build
+
+.PHONY: all
 
 build:
-				docker build -t fetch-resources:latest .
-.PHONY:build
+	docker build -t fetch-resources:latest .
 
 test: build
-				docker run --rm -v ${PWD}/tests:/work -it fetch-resources:latest
-.PHONY:test
+	docker run --rm -v ${PWD}/tests:/work -it fetch-resources:latest
